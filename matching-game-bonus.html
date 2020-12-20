@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smiley Face Matching Game</title>
+    <style>
+        img {
+            position: absolute;
+        }
+        div {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background-color: white;
+            box-shadow: 10px 10px 10px gray;
+        }
+        #rightSide {
+            left: 500px;
+            border-left: 5px solid;
+        }
+        body {
+            background-color:lightgray;
+            text-align: center;
+            font-family: monospace; arial; sans-serif;
+        }
+        h1 {
+            background-color: yellow;
+            border: 4px solid;
+            padding: 20px;
+            margin-right: 900px;
+            margin-left: 260px;
+            border-radius: 80px;
+            box-shadow: 10px 10px 10px gray;
+        }
+        p {
+            background-color: yellow;
+            border: 4px solid;
+            font-size: 20px;
+            padding: 5px 0px;
+            margin-right: 700px;
+            margin-left: 60px;
+            border-radius: 80px;
+            box-shadow: 10px 10px 10px gray;
+        }
+        button {
+            background-color: rgb(255, 196, 0);
+            border-radius: 20px;
+            padding: 10px;
+            margin: 10px;
+            border: 4px solid black;
+            font-family: monospace; arial; sans-serif;
+            box-shadow: 5px 5px 5px white;
+        }
+    </style>
+</head>
+<body>
+    <h1>&#128578 Matching Game &#128578</h1>
+    <p>Click on the extra smiling face on the left that does <em>not</em> belong.
+        <button type="button" onclick="startGame()">Click Here to Start!</button>
+        <button type="button" onclick="reStart()">Click Here to Erase! &#129324</button>
+    </p>
+    <div id="leftSide"></div>
+    <div id="rightSide"></div>
+    <script>
+        let numberOfFaces = 5;
+        let level = 1;
+        const theLeftSide = document.querySelector('#leftSide');
+        const theRightSide = document.querySelector('#rightSide'); 
+function generateFaces() {
+    for (i = 0; i < numberOfFaces; i++) {
+        const face = document.createElement('img');
+        face.src = 'images/smile.png';
+        let randomTop = Math.floor(Math.random()* 400)+ 1;
+        let randomLeft = Math.floor(Math.random()* 400)+ 1;
+        face.style.top = randomTop + 'px';
+        face.style.left = randomLeft + 'px';
+        theLeftSide.appendChild(face);
+    }
+    const leftSideImages = theLeftSide.cloneNode(true);
+    leftSideImages.removeChild(leftSideImages.lastChild);
+    theRightSide.appendChild(leftSideImages);
+    theLeftSide.lastChild.addEventListener('click', nextLevel);
+    theLeftSide.addEventListener('click', gameOver);
+    theRightSide.addEventListener('click', gameOver);
+}
+function nextLevel() {
+    event.stopPropagation();
+    while (theLeftSide.firstChild) {
+                theLeftSide.removeChild(theLeftSide.firstChild);
+            };
+    while (theRightSide.firstChild) {
+                theRightSide.removeChild(theRightSide.firstChild);
+            };
+    numberOfFaces += 5;
+    level += 1;
+    generateFaces();
+}
+function gameOver() {
+    if (level <= 2) {
+        alert('Try again! It looks like you need some practice!')
+    } else if (level >= 3 && level <6) {
+        alert('Game Over! You made it to level ' + level + '! You\'re getting better!')
+    } else {
+    alert('Game Over! You made it to level ' + level + '! Congratulations!')};
+    theLeftSide.lastChild.removeEventListener('click', nextLevel);
+    theLeftSide.removeEventListener('click', gameOver);
+    theRightSide.removeEventListener('click', gameOver);
+}
+function reStart() {
+    numberOfFaces = 5;
+    level = 1;
+    while (theLeftSide.firstChild) {
+                theLeftSide.removeChild(theLeftSide.firstChild);
+            };
+    while (theRightSide.firstChild) {
+                theRightSide.removeChild(theRightSide.firstChild);
+            }
+}
+function startGame() {
+    reStart();
+    generateFaces();
+}
+    </script>
+</body>
+</html>
